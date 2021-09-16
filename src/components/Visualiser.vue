@@ -201,14 +201,7 @@ export default {
     const EYELID_CLOSED_PATH =
       "M30,43C30,43 31.226,43.559 32.772,44.265C36.728,46.07 41.272,46.07 45.228,44.265C46.774,43.559 48,43 48,43C48,43 46.702,43.577 45.092,44.292C41.214,46.016 36.786,46.016 32.908,44.292C31.298,43.577 30,43 30,43Z";
 
-    let animations = {
-      earLeft: null,
-      earRight: null,
-      eyeLeft: null,
-      eyeMiddle: null,
-      eyeRight: null,
-      mouth: null,
-    };
+    let animations = {};
 
     onMounted(() => {
       animations.earLeft = gsap
@@ -268,6 +261,7 @@ export default {
           watch(
             () => stem.volume,
             (volume) => {
+              // @TODO: refine!
               let progress = 1 - ((volume + 6 - 50) * (100 / 40)) / 100;
               animations[animation].progress(progress);
             }

@@ -66,6 +66,6 @@ export default {
 .main {
   height: 100vh;
   width: 100vw;
-  background: #9fd3d4;
+  background: var(--space-cadet);
 }
 </style>

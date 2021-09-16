@@ -1,29 +1,24 @@
 <template>
   <div class="controls">
-    <div>
-      <button
-        @click="toggleAudio"
-        :class="[
-          'controls__control',
-          'controls__control--transport',
-          { 'controls__control--on': playCaption === 'play' },
-        ]"
-      >
-        {{ playCaption }}
-      </button>
-    </div>
+    <button
+      @click="toggleAudio"
+      :class="[
+        'controls__control',
+        'controls__control--transport',
+        { 'controls__control--on': playCaption === 'play' },
+      ]"
+    >
+      {{ playCaption }}
+    </button>
 
-    <div v-for="(stem, stemName) in stems" :key="stemName">
-      <button
-        @click="stem.toggleAudio()"
-        :class="[
-          'controls__control',
-          { 'controls__control--on': stem.audible },
-        ]"
-      >
-        {{ stem.name }}
-      </button>
-    </div>
+    <button
+      v-for="(stem, stemName) in stems"
+      :key="stemName"
+      @click="stem.toggleAudio()"
+      :class="['controls__control', { 'controls__control--on': stem.audible }]"
+    >
+      {{ stem.name }}
+    </button>
   </div>
 </template>
 
@@ -83,10 +78,19 @@ export default {
   color: #222;
   font-family: monospace;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 860px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
 
   button {
     opacity: 0.8;
     font-family: monospace;
+    width: auto;
 
     &:hover {
       opacity: 1;
@@ -99,7 +103,7 @@ export default {
     padding: 1rem;
     color: white;
     border: none;
-    margin-bottom: 0.2rem;
+    margin: 0.1rem;
     cursor: pointer;
 
     &--transport {
