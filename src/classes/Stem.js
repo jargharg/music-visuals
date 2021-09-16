@@ -5,14 +5,14 @@ import { ref } from "vue";
 const FPMS = 60 / 1000;
 
 export default class Stem {
-  constructor({ animation, name, player, speed = 0.8 }) {
-    // @TODO: handle animations array
-    this.animation = animation;
+  constructor({ animation, animations, name, player, speed = 0.8 }) {
+    this.animations = animation ? [animation] : animations;
     this.name = name;
     this.player = player;
     this.speed = speed;
 
-    this.meter = new Tone.Meter();
+    // @TODO: allow stereo animations
+    this.meter = new Tone.Meter(); // { channels: this.animations.length });
     this.audible = true;
 
     this._volume = 0;
@@ -32,7 +32,6 @@ export default class Stem {
   followVolumeChange(_, deltaTime) {
     let dt = 1.0 - Math.pow(1.0 - this.speed, deltaTime * FPMS);
     let meterValue = this.meter.getValue();
-
     let volumePrev = Math.max(this._volume, -100);
     let volumeNow = Math.max(meterValue, -100);
     let volumeDiff = volumeNow - volumePrev;

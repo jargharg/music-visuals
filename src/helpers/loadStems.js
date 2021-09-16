@@ -38,7 +38,7 @@ async function loadStems() {
     }),
     drums: new Stem({
       name: "drums",
-      animations: ["earLeft", "earRight"], // @TODO
+      animations: ["bgShapeLeft", "bgShapeRight"],
       player: players.player("drums"),
       speed: 0.5,
     }),

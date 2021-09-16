@@ -32,6 +32,23 @@
     </defs>
 
     <path class="background" d="M-100 0H300V100H-100z" />
+
+    <circle
+      id="bg-shape-left"
+      class="bg-shape bg-shape--left"
+      cx="20"
+      cy="50"
+      r="20"
+    />
+
+    <circle
+      id="bg-shape-right"
+      class="bg-shape bg-shape--right"
+      cx="80"
+      cy="50"
+      r="20"
+    />
+
     <g id="face-group">
       <g id="ear-left">
         <path
@@ -151,7 +168,7 @@
         />
       </g>
 
-      <g id="nose">
+      <g id="nose" class="nose">
         <path
           d="M46,65C48.667,67.804 51.333,67.848 54,65"
           transform="translate(0 -1.12)"
@@ -224,10 +241,21 @@ export default {
         .timeline({ paused: true })
         .from("#mouth-hinge", { y: 8 });
 
-      animations.face = gsap
+      animations.bgShapeLeft = gsap
         .timeline({ paused: true })
-        .to("#face-group", { y: 2, duration: 0.2 });
+        .to("#bg-shape-left", { scale: 0, transformOrigin: "center center" });
 
+      animations.bgShapeRight = gsap
+        .timeline({ paused: true })
+        .to("#bg-shape-right", {
+          scale: 0,
+          transformOrigin: "center center",
+        });
+
+      // animations.face = gsap
+      //   .timeline({ paused: true })
+      //   .to("#face-group", { y: 2, duration: 0.2 });
+      //
       // watch(
       //   () => props.step,
       //   (step) => {
@@ -236,14 +264,15 @@ export default {
       // );
 
       Object.values(props.stems).forEach((stem) => {
-        if (!stem.animation) return;
-        watch(
-          () => stem.volume,
-          (volume) => {
-            let progress = 1 - ((volume + 6 - 50) * (100 / 40)) / 100;
-            animations[stem.animation].progress(progress);
-          }
-        );
+        stem.animations.forEach((animation) => {
+          watch(
+            () => stem.volume,
+            (volume) => {
+              let progress = 1 - ((volume + 6 - 50) * (100 / 40)) / 100;
+              animations[animation].progress(progress);
+            }
+          );
+        });
       });
     });
   },
@@ -257,7 +286,6 @@ export default {
   width: 100vw;
 
   * {
-    fill: none;
     stroke: var(--space-cadet);
 
     stroke-width: 0.5;
@@ -272,8 +300,14 @@ export default {
   fill: var(--slate-blue);
 }
 
+.nose,
 .eyelid {
-  // stroke: var(--sea-green-crayola);
+  fill: none;
+}
+
+.bg-shape {
+  fill: none;
+  stroke: var(--sea-green-crayola);
 }
 
 .eye {
