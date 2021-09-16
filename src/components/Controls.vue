@@ -44,22 +44,26 @@ export default {
       default: false,
     },
   },
-  setup() {
+  setup(_, { emit }) {
     let audioInitialised = false;
     let playCaption = ref("play");
 
     let playAudio = async () => {
       if (!audioInitialised) await Tone.start();
       Tone.Transport.start();
-      Tone.Transport.position = "27:2:0";
+      // Tone.Transport.position = "27:2:0";
+      playCaption.value = "stop";
+    };
+
+    let stopAudio = () => {
+      playCaption.value = "play";
+      Tone.Transport.stop();
     };
 
     let toggleAudio = () => {
       if (Tone.Transport.state === "started") {
-        playCaption.value = "play";
-        Tone.Transport.stop();
+        stopAudio();
       } else {
-        playCaption.value = "stop";
         playAudio();
       }
     };
@@ -92,7 +96,7 @@ export default {
   }
 
   &__control {
-    background: crimson;
+    background: var(--ultra-red);
     width: 100%;
     padding: 1rem;
     color: white;
@@ -105,7 +109,7 @@ export default {
     }
 
     &--on {
-      background: limegreen;
+      background: var(--sea-green-crayola);
       color: black;
     }
   }

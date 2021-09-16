@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <visualiser :stems="stems" v-if="isLoaded" />
+    <visualiser :stems="stems" v-if="isLoaded" :step="step" />
     <step-indicator :step="step" />
     <controls :stems="stems" :is-loaded="isLoaded" />
   </div>
@@ -25,7 +25,7 @@ export default {
     let stems = reactive({}); // @TODO: can we move to a new component to use async setup and <Suspense />?
     let step = ref(0);
     let incrementStep = () => {
-      step.value = step.value >= 3 ? 0 : step.value + 1;
+      step.value = +Tone.Transport.position.split(":")[1];
     };
 
     Tone.Transport.bpm.value = 129;
@@ -42,24 +42,27 @@ export default {
     });
 
     return {
-      step,
-      stems,
       isLoaded,
+      stems,
+      step,
     };
   },
 };
 </script>
 
 <style lang="scss">
+:root {
+  --buff: #f4e285ff;
+  --ultra-red: #f76f8eff;
+  --maya-blue: #7cc6feff;
+  --sea-green-crayola: #1effbcff;
+  --slate-blue: #7d53deff;
+  --space-cadet: #2d3047ff;
+}
+
 .main {
   height: 100vh;
   width: 100vw;
   background: #9fd3d4;
-}
-
-.volume {
-  height: 100%;
-  width: 100%;
-  display: block;
 }
 </style>

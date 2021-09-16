@@ -5,40 +5,39 @@ import { ref } from "vue";
 const FPMS = 60 / 1000;
 
 export default class Stem {
-  constructor({ name, fillColor, speed = 0.3, player }) {
+  constructor({ animation, name, player, speed = 0.8 }) {
+    // @TODO: handle animations array
+    this.animation = animation;
     this.name = name;
-    this.fillColor = fillColor;
-    this.speed = speed;
-    this.audible = true;
-    this.volume = ref(-1);
-
     this.player = player;
+    this.speed = speed;
+
+    this.meter = new Tone.Meter();
+    this.audible = true;
 
     this._volume = 0;
-    this.meter = new Tone.Meter(0.9);
+    this.volume = ref(0); // 0 to 100
+    this.volumeSet = gsap.quickSetter(this.volume, "value");
+    gsap.ticker.add(this.followVolumeChange.bind(this));
 
-    this.player.connect(this.meter);
     this.player.volume.value = -6; // @TODO: set a limiter on master channel?
 
     this.player
+      .connect(this.meter)
       .sync()
       .start(0)
       .toDestination();
+  }
 
-    this.volumeSet = gsap.quickSetter(this.volume, "value");
+  followVolumeChange(_, deltaTime) {
+    let dt = 1.0 - Math.pow(1.0 - this.speed, deltaTime * FPMS);
+    let meterValue = this.meter.getValue();
 
-    let followVolumeChange = (_, deltaTime) => {
-      let dt = 1.0 - Math.pow(1.0 - this.speed, deltaTime * FPMS);
-      let meterValue = this.meter.getValue();
-
-      let volumePrev = Math.max(this._volume, -100);
-      let volumeNow = Math.max(meterValue, -100);
-      let volumeDiff = volumeNow - volumePrev;
-      this._volume += volumeDiff * dt;
-      this.volumeSet(100 + this._volume);
-    };
-
-    gsap.ticker.add(followVolumeChange);
+    let volumePrev = Math.max(this._volume, -100);
+    let volumeNow = Math.max(meterValue, -100);
+    let volumeDiff = volumeNow - volumePrev;
+    this._volume += volumeDiff * dt;
+    this.volumeSet(100 + this._volume);
   }
 
   toggleAudio() {

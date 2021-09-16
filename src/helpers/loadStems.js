@@ -3,8 +3,6 @@ import * as Tone from "tone";
 
 // const getRemoteStemUrl = (name) => `https://jargharg-stems.s3.eu-west-2.amazonaws.com/in-dreams-${name}.mp3`;
 
-const COLORS = ["#ef6351", "#f38375", "#f7a399", "#fbc3bc", "#ffe3e0"];
-
 function getStem(name) {
   return { [name]: require(`@/assets/in-dreams-${name}.mp3`) };
 }
@@ -32,40 +30,40 @@ async function loadStems() {
   return {
     voxL: new Stem({
       name: "vox left",
+      animation: "earLeft",
       player: players.player("vox-left"),
-      fillColor: `${COLORS[0]}99`,
     }),
     guitar: new Stem({
       name: "guitar",
+      animation: "eyeLeft",
       player: players.player("guitar"),
-      fillColor: COLORS[1],
     }),
     drums: new Stem({
       name: "drums",
+      animations: ["earLeft", "earRight"], // @TODO
       player: players.player("drums"),
-      fillColor: COLORS[2],
       speed: 0.5,
     }),
     vox: new Stem({
       name: "vox",
+      animation: "mouth",
       player: players.player("vox"),
-      fillColor: COLORS[4],
     }),
     synth: new Stem({
       name: "synth",
+      animation: "eyeMiddle",
       player: players.player("synth"),
-      fillColor: COLORS[3],
       speed: 0.1,
     }),
     bass: new Stem({
-      player: players.player("bass"),
       name: "bass",
-      fillColor: COLORS[0],
+      animation: "eyeRight",
+      player: players.player("bass"),
     }),
     voxR: new Stem({
       name: "vox right",
+      animation: "earRight",
       player: players.player("vox-right"),
-      fillColor: `${COLORS[0]}99`,
     }),
   };
 }
