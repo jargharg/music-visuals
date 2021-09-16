@@ -1,8 +1,9 @@
 <template>
   <div class="main">
+    <loading-screen v-if="!isLoaded" />
     <visualiser :stems="stems" v-if="isLoaded" :step="step" />
     <step-indicator :step="step" />
-    <controls :stems="stems" :is-loaded="isLoaded" />
+    <controls :stems="stems" />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import { reactive, ref } from "vue";
 import * as Tone from "tone";
 import Controls from "@/components/Controls";
 import Visualiser from "@/components/Visualiser";
+import LoadingScreen from "@/components/LoadingScreen";
 import StepIndicator from "@/components/StepIndicator";
 import loadStems from "@/helpers/loadStems";
 
@@ -19,6 +21,7 @@ export default {
     Controls,
     Visualiser,
     StepIndicator,
+    LoadingScreen,
   },
   setup() {
     let isLoaded = ref(false);

@@ -1,8 +1,6 @@
 <template>
   <div class="controls">
-    <div v-if="!isLoaded">Loading...</div>
-
-    <div v-else>
+    <div>
       <button
         @click="toggleAudio"
         :class="[
