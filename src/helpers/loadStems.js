@@ -1,10 +1,8 @@
 import Stem from "@/classes/Stem";
 import * as Tone from "tone";
 
-// const getRemoteStemUrl = (name) => `https://jargharg-stems.s3.eu-west-2.amazonaws.com/in-dreams-${name}.mp3`;
-
 function getStem(name) {
-  return { [name]: require(`@/assets/in-dreams-${name}.mp3`) };
+  return { [name]: `/assets/in-dreams-${name}.[webm|mp3]` };
 }
 
 function loadPlayers() {
