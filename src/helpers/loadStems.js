@@ -1,7 +1,7 @@
 import Stem from "@/classes/Stem";
 import * as Tone from "tone";
 
-function getStem(name) {
+function mapStemUrl(name) {
   return { [name]: `/assets/in-dreams-${name}.[webm|mp3]` };
 }
 
@@ -9,13 +9,13 @@ function loadPlayers() {
   return new Promise((resolve) => {
     let players = new Tone.Players({
       urls: {
-        ...getStem("bass"),
-        ...getStem("guitar"),
-        ...getStem("vox-left"),
-        ...getStem("drums"),
-        ...getStem("vox"),
-        ...getStem("synth"),
-        ...getStem("vox-right"),
+        ...mapStemUrl("bass"),
+        ...mapStemUrl("guitar"),
+        ...mapStemUrl("vox-left"),
+        ...mapStemUrl("drums"),
+        ...mapStemUrl("vox"),
+        ...mapStemUrl("synth"),
+        ...mapStemUrl("vox-right"),
       },
       onload: () => resolve(players),
     });
